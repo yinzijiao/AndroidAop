@@ -10,6 +10,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
+import java.lang.reflect.Modifier;
+
 /**
  * Created by yin on 2017/8/16.
  */
@@ -34,23 +36,30 @@ public class AspectHelper {
 
         if (trace.value()) {
             StringBuilder builder = new StringBuilder();
-            builder.append("ClassName-->" + className);
+            builder.append("ClassName: " + className);
             builder.append('\n');
-            builder.append("MethodName-->" + methodName);
-            builder.append('\n');
-            builder.append("MethodArgs-->");
+            builder.append("Method: ");
+            builder.append(Modifier.toString(methodSignature.getModifiers()) + " ");
+            builder.append(methodSignature.getReturnType().getSimpleName());
+            if (o != null) {
+                builder.append("[" + o.toString() + "]");
+            }
+            builder.append(" ");
+            builder.append(methodName);
+            builder.append("(");
             for (int i = 0; i < proceedingJoinPoint.getArgs().length; i++) {
                 Object o1 = proceedingJoinPoint.getArgs()[i];
                 if (o1 != null) {
-                    builder.append("(" + o1.getClass().getSimpleName() + "-" + o1.toString() + ") ");
+                    builder.append(methodSignature.getParameterTypes()[i].getSimpleName() + " " + methodSignature.getParameterNames()[i] + "[" + o1.toString() + "]");
+                }
+                if (i != proceedingJoinPoint.getArgs().length - 1) {
+                    builder.append(", ");
                 }
             }
+            builder.append(")");
             builder.append('\n');
-            if (o != null) {
-                builder.append("MethodReturn-->" + o.getClass().getSimpleName() + "-->" + o.toString());
-                builder.append('\n');
-            }
-            builder.append("MethodDuration-->" + (stop - start) / 1000000D + "ms");
+
+            builder.append("MethodDuration: " + (stop - start) / 1000000D + "ms");
             builder.append('\n');
             Log.i("MethodTrace", builder.toString());
         }
