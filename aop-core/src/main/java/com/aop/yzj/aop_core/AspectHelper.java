@@ -1,7 +1,6 @@
 package com.aop.yzj.aop_core;
 
 import android.util.Log;
-import android.view.View;
 
 import com.aop.yzj.aop_core.annotation.MethodTrace;
 import com.aop.yzj.aop_core.annotation.SingleClick;
@@ -64,26 +63,23 @@ public class AspectHelper {
         return o;
     }
 
-    @Pointcut("execution(@com.aop.yzj.aop_core.annotation.SingleClick * *(android.view.View)) && @annotation(click)")
+    @Pointcut("execution(@com.aop.yzj.aop_core.annotation.SingleClick * *(..)) && @annotation(click)")
     public void singleClick(SingleClick click) {
     }
 
-    private Map<View, Long> map = new HashMap<>();
+    private Map<String, Long> map = new HashMap<>();
 
     @Around("singleClick(click)")
     public void singleClick(final ProceedingJoinPoint joinPoint, final SingleClick click) throws Throwable {
-        View v = (View) joinPoint.getArgs()[0];
-        if (v != null) {
-            Long aLong = map.get(v);
-            if (aLong != null && aLong > 0) {
-                long l = System.currentTimeMillis() - aLong;
-                if (l > click.value()) {
-                    joinPoint.proceed(joinPoint.getArgs());
-                }
-            } else {
+        Long aLong = map.get(joinPoint.getSignature().toString());
+        if (aLong != null && aLong > 0) {
+            long l = System.currentTimeMillis() - aLong;
+            if (l > click.value()) {
                 joinPoint.proceed(joinPoint.getArgs());
             }
-            map.put(v, System.currentTimeMillis());
+        } else {
+            joinPoint.proceed(joinPoint.getArgs());
         }
+        map.put(joinPoint.getSignature().toString(), System.currentTimeMillis());
     }
 }
