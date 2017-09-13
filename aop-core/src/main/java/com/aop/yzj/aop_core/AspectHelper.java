@@ -44,14 +44,14 @@ public class AspectHelper {
             builder.append(Modifier.toString(methodSignature.getModifiers()) + " ");
             builder.append(methodSignature.getReturnType().getSimpleName());
             if (o != null) {
-                builder.append("[" + o.toString() + "]");
+                builder.append("[" + o + "]");
             }
             builder.append(" ");
             builder.append(methodName);
             builder.append("(");
             for (int i = 0; i < proceedingJoinPoint.getArgs().length; i++) {
                 Object o1 = proceedingJoinPoint.getArgs()[i];
-                builder.append(methodSignature.getParameterTypes()[i].getSimpleName() + " " + methodSignature.getParameterNames()[i] + "[" + (o1 == null ? "null" : o1.toString()) + "]");
+                builder.append(methodSignature.getParameterTypes()[i].getSimpleName() + " " + methodSignature.getParameterNames()[i] + "[" + o1 + "]");
                 if (i != proceedingJoinPoint.getArgs().length - 1) {
                     builder.append(", ");
                 }
