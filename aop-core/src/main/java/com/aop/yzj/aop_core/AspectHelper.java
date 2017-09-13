@@ -2,6 +2,7 @@ package com.aop.yzj.aop_core;
 
 import android.util.Log;
 
+import com.aop.yzj.aop_core.annotation.DoubleClick;
 import com.aop.yzj.aop_core.annotation.MethodTrace;
 import com.aop.yzj.aop_core.annotation.SingleClick;
 
@@ -67,11 +68,12 @@ public class AspectHelper {
     public void singleClick(SingleClick click) {
     }
 
-    private Map<String, Long> map = new HashMap<>();
+    private Map<String, Long> singleMap = new HashMap<>();
+    private Map<String, Long> doubleMap = new HashMap<>();
 
     @Around("singleClick(click)")
     public void singleClick(final ProceedingJoinPoint joinPoint, final SingleClick click) throws Throwable {
-        Long aLong = map.get(joinPoint.getSignature().toString());
+        Long aLong = singleMap.get(joinPoint.getSignature().toString());
         if (aLong != null && aLong > 0) {
             long l = System.currentTimeMillis() - aLong;
             if (l > click.value()) {
@@ -80,6 +82,22 @@ public class AspectHelper {
         } else {
             joinPoint.proceed(joinPoint.getArgs());
         }
-        map.put(joinPoint.getSignature().toString(), System.currentTimeMillis());
+        singleMap.put(joinPoint.getSignature().toString(), System.currentTimeMillis());
+    }
+
+    @Pointcut("execution(@com.aop.yzj.aop_core.annotation.DoubleClick * *(..)) && @annotation(click)")
+    public void doubleClick(DoubleClick click) {
+    }
+
+    @Around("doubleClick(click)")
+    public void doubleClick(final ProceedingJoinPoint joinPoint, final DoubleClick click) throws Throwable {
+        Long aLong = doubleMap.get(joinPoint.getSignature().toString());
+        if (aLong != null && aLong > 0) {
+            long l = System.currentTimeMillis() - aLong;
+            if (l < click.value()) {
+                joinPoint.proceed(joinPoint.getArgs());
+            }
+        }
+        doubleMap.put(joinPoint.getSignature().toString(), System.currentTimeMillis());
     }
 }

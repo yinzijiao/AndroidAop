@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.aop.yzj.aop_core.annotation.DoubleClick;
 import com.aop.yzj.aop_core.annotation.MethodTrace;
 import com.aop.yzj.aop_core.annotation.SingleClick;
 
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         getDetail("vv", "bb");
         findViewById(R.id.tv).setOnClickListener(new View.OnClickListener() {
             @Override
-            @SingleClick
+            @DoubleClick
             public void onClick(View v) {
                 Log.e("aaaaaaaaaa", "aaaaaaaaaaaaaa");
             }
