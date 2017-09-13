@@ -36,9 +36,8 @@ public class AspectHelper {
 
         if (trace.value()) {
             StringBuilder builder = new StringBuilder();
-            builder.append("ClassName: " + className);
-            builder.append('\n');
-            builder.append("Method: ");
+            builder.append(className);
+            builder.append("-->");
             builder.append(Modifier.toString(methodSignature.getModifiers()) + " ");
             builder.append(methodSignature.getReturnType().getSimpleName());
             if (o != null) {
@@ -57,10 +56,7 @@ public class AspectHelper {
                 }
             }
             builder.append(")");
-            builder.append('\n');
-
-            builder.append("MethodDuration: " + (stop - start) / 1000000D + "ms");
-            builder.append('\n');
+            builder.append("{" + (stop - start) / 1000000D + "ms}");
             Log.i("MethodTrace", builder.toString());
         }
         return o;
