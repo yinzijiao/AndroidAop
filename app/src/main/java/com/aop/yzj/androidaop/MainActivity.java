@@ -8,6 +8,7 @@ import com.aop.yzj.aop_core.annotation.MethodTrace;
 public class MainActivity extends AppCompatActivity {
 
     @Override
+    @MethodTrace(true)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

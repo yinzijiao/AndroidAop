@@ -48,9 +48,7 @@ public class AspectHelper {
             builder.append("(");
             for (int i = 0; i < proceedingJoinPoint.getArgs().length; i++) {
                 Object o1 = proceedingJoinPoint.getArgs()[i];
-                if (o1 != null) {
-                    builder.append(methodSignature.getParameterTypes()[i].getSimpleName() + " " + methodSignature.getParameterNames()[i] + "[" + o1.toString() + "]");
-                }
+                builder.append(methodSignature.getParameterTypes()[i].getSimpleName() + " " + methodSignature.getParameterNames()[i] + "[" + (o1 == null ? "null" : o1.toString()) + "]");
                 if (i != proceedingJoinPoint.getArgs().length - 1) {
                     builder.append(", ");
                 }
