@@ -25,7 +25,6 @@ gen/
 out/
 
 # Gradle files
-/freeline_project_description.json
 .gradle/
 build/
 
@@ -50,15 +49,6 @@ captures/
 # Keystore files
 *.jks
 
-# .bat
-*.bat
-
-# .gradlew
-gradlew
 
 # .prolist
 *.prolist
-app/src/main/java/com/guoan/app/network/ApiConfig.java.rej
-freeline
-freeline_core
-freeline.py
