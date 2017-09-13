@@ -1,8 +1,10 @@
 package com.aop.yzj.aop_core;
 
 import android.util.Log;
+import android.view.View;
 
 import com.aop.yzj.aop_core.annotation.MethodTrace;
+import com.aop.yzj.aop_core.annotation.SingleClick;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -11,6 +13,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by yin on 2017/8/16.
@@ -60,4 +64,26 @@ public class AspectHelper {
         return o;
     }
 
+    @Pointcut("execution(@com.aop.yzj.aop_core.annotation.SingleClick * *(android.view.View)) && @annotation(click)")
+    public void singleClick(SingleClick click) {
+    }
+
+    private Map<View, Long> map = new HashMap<>();
+
+    @Around("singleClick(click)")
+    public void singleClick(final ProceedingJoinPoint joinPoint, final SingleClick click) throws Throwable {
+        View v = (View) joinPoint.getArgs()[0];
+        if (v != null) {
+            Long aLong = map.get(v);
+            if (aLong != null && aLong > 0) {
+                long l = System.currentTimeMillis() - aLong;
+                if (l > click.value()) {
+                    joinPoint.proceed(joinPoint.getArgs());
+                }
+            } else {
+                joinPoint.proceed(joinPoint.getArgs());
+            }
+            map.put(v, System.currentTimeMillis());
+        }
+    }
 }

@@ -2,8 +2,11 @@ package com.aop.yzj.androidaop;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import com.aop.yzj.aop_core.annotation.MethodTrace;
+import com.aop.yzj.aop_core.annotation.SingleClick;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,6 +18,13 @@ public class MainActivity extends AppCompatActivity {
         getDetail();
         getDetail("aaa");
         getDetail("vv", "bb");
+        findViewById(R.id.tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            @SingleClick
+            public void onClick(View v) {
+                Log.e("aaaaaaaaaa", "aaaaaaaaaaaaaa");
+            }
+        });
     }
 
     @MethodTrace(true)
