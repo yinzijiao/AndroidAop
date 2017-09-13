@@ -27,7 +27,6 @@ out/
 # Gradle files
 /freeline_project_description.json
 .gradle/
-gradle/
 build/
 
 # Local configuration file (sdk path, etc)

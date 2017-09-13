@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @MethodTrace(true)
-    public void getDetail() {
+    void getDetail() {
         int a = 1;
         int b = 2;
         int c = a + b;
